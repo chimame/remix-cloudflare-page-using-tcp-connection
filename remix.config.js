@@ -1,3 +1,19 @@
+
+import { withEsbuildOverride } from "remix-esbuild-override";
+import NodeGlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
+import NodeModulesPolyfills from "@esbuild-plugins/node-modules-polyfill";
+
+withEsbuildOverride((option, { isServer, isDev }) => {
+  // update the option
+  option.plugins = [
+    NodeGlobalsPolyfills['default']({ buffer: true }),
+    NodeModulesPolyfills['default'](),
+    ...option.plugins,
+  ];
+
+  return option;
+});
+
 /** @type {import('@remix-run/dev').AppConfig} */
 export default {
   devServerBroadcastDelay: 1000,
